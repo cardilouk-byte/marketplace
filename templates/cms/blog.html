@@ -1,0 +1,19 @@
+{% extends 'site/base.html' %}
+{% block title %}Blog - AgroShop{% endblock %}
+{% block content %}
+<div class="section" style="margin-top:1.5rem">
+    <h2>Blog</h2>
+    <div class="product-grid" style="margin-top:1rem">
+        {% for post in posts %}
+        <div class="product-card">
+            {% if post.image %}<img src="{{ post.image.url }}" alt="{{ post.title }}" style="height:140px;object-fit:cover">{% else %}<img src="https://placehold.co/300x140/eef2ff/1e40af?text=Blog" alt="{{ post.title }}">{% endif %}
+            <h4>{{ post.title }}</h4>
+            <p class="muted">{{ post.excerpt|truncatewords:15 }}</p>
+            <a href="{% url 'cms:blog_detail' post.slug %}" class="btn-blue" style="margin-top:.5rem">Lire l'article</a>
+        </div>
+        {% empty %}
+        <p class="muted">Pa gen atik pou kounye a.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'site/base.html' %}
+{% block title %}Notifications - AgroShop{% endblock %}
+{% block content %}
+<div class="section" style="margin-top:1.5rem">
+    <h2>Notifications</h2>
+    {% for n in notifications %}
+    <div class="card" style="{% if not n.is_read %}border-left:4px solid var(--secondary-orange){% endif %}">
+        <strong>{{ n.title }}</strong>
+        <p>{{ n.message }}</p>
+        <small class="muted">{{ n.created_at|date:"d/m/Y H:i" }}</small>
+        {% if not n.is_read %} <a href="{% url 'notifications:mark_read' n.id %}" style="color:var(--primary-blue);font-size:.85rem">Marquer comme lu</a>{% endif %}
+    </div>
+    {% empty %}
+    <p class="muted">Pa gen notifikasyon.</p>
+    {% endfor %}
+</div>
+{% endblock %}

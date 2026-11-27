@@ -1,0 +1,13 @@
+{% extends 'site/base.html' %}
+{% block title %}Mon profil - AgroShop{% endblock %}
+{% block content %}
+<div class="auth-box">
+    <div class="card">
+        <h2 style="margin-bottom:1rem">Mon profil</h2>
+        <form method="post" enctype="multipart/form-data">{% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn" type="submit">Enregistrer</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

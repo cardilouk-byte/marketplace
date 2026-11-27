@@ -1,0 +1,14 @@
+{% extends 'site/base.html' %}
+{% block title %}Inscription - AgroShop{% endblock %}
+{% block content %}
+<div class="auth-box">
+    <div class="card">
+        <h2 style="margin-bottom:1rem">Créer un compte</h2>
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn" type="submit" style="width:100%">S'inscrire</button>
+        </form>
+        <p class="muted" style="margin-top:1rem">Ou gen kont deja? <a href="{% url 'accounts:login' %}" style="color:var(--primary-blue)">Se connecter</a></p>
+    </div>
+</div>
+{% endblock %}

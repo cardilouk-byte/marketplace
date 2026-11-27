@@ -1,0 +1,11 @@
+{% extends 'site/base.html' %}
+{% block title %}{{ post.title }} - AgroShop{% endblock %}
+{% block content %}
+<div class="section" style="margin-top:1.5rem;max-width:800px">
+    <a href="{% url 'cms:blog' %}" class="muted">← Retour au blog</a>
+    <h2 style="margin:.8rem 0">{{ post.title }}</h2>
+    <p class="muted">{{ post.published_at|date:"d/m/Y" }}</p>
+    {% if post.image %}<img src="{{ post.image.url }}" alt="{{ post.title }}" style="border-radius:12px;margin:1rem 0">{% endif %}
+    <div class="card">{{ post.content|linebreaks }}</div>
+</div>
+{% endblock %}

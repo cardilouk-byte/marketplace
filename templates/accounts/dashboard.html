@@ -1,0 +1,33 @@
+{% extends 'site/base.html' %}
+{% block title %}Mon compte - AgroShop{% endblock %}
+{% block content %}
+<div class="section" style="margin-top:1.5rem">
+    <h2>Mon Tableau de bord</h2>
+    <p class="muted" style="margin-bottom:1.5rem">Byenveni, {{ user.get_full_name|default:user.username }}!</p>
+    <div class="features" style="grid-template-columns:repeat(3,1fr);margin-left:0;margin-right:0;padding:0">
+        <div class="feature">📦 <div><b>{{ total_orders }}</b>Commandes</div></div>
+        <div class="feature">💰 <div><b>{{ total_spent }} HTG</b>Total dépensé</div></div>
+        <div class="feature">❤️ <div><b>{{ total_favorites }}</b>Favoris</div></div>
+    </div>
+    <h3 style="margin:1.5rem 0 1rem">Mes dernières commandes</h3>
+    <table class="table">
+        <thead><tr><th>#ID</th><th>Date</th><th>Statut</th><th>Total</th></tr></thead>
+        <tbody>
+        {% for order in recent_orders %}
+            <tr>
+                <td>#{{ order.order_number }}</td>
+                <td>{{ order.created_at|date:"d/m/Y" }}</td>
+                <td><span class="status {{ order.status }}">{{ order.get_status_display }}</span></td>
+                <td><b>{{ order.total_amount }} HTG</b></td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="4">Ou poko gen kòmand.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <p style="margin-top:1.5rem">
+        <a href="{% url 'accounts:orders' %}" class="btn-blue" style="width:auto;display:inline-block">Toutes mes commandes</a>
+        <a href="{% url 'accounts:profile' %}" class="btn-blue" style="width:auto;display:inline-block;background:#f97316">Mon profil</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'site/base.html' %}
+{% block title %}FAQ - AgroShop{% endblock %}
+{% block content %}
+<div class="section" style="margin-top:1.5rem">
+    <h2>FAQ</h2>
+    {% for faq in faqs %}
+    <div class="card">
+        <h3 style="font-size:1rem;margin-bottom:.5rem">{{ faq.question }}</h3>
+        <p class="muted">{{ faq.answer }}</p>
+    </div>
+    {% empty %}
+    <p class="muted">Pa gen kesyon ki afiche pou kounye a.</p>
+    {% endfor %}
+</div>
+{% endblock %}

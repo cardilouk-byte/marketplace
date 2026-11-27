@@ -1,0 +1,22 @@
+{% extends 'site/base.html' %}
+{% block title %}Contact - AgroShop{% endblock %}
+{% block content %}
+<div class="cart-layout" style="margin-top:1.5rem">
+    <div class="card">
+        <h2 style="margin-bottom:1rem">Contact</h2>
+        <p>📍 123 Rue de l'Indépendance, Port-au-Prince</p>
+        <p>📞 +509 38 12 24 56</p>
+        <p>✉️ info@agroshop.ht</p>
+    </div>
+    <div class="card">
+        <h3 style="margin-bottom:1rem">Envoyer un message</h3>
+        <form method="post">{% csrf_token %}
+            <p><label>Nom</label><input type="text" name="name" required></p>
+            <p><label>Email</label><input type="email" name="email" required></p>
+            <p><label>Téléphone</label><input type="text" name="phone"></p>
+            <p><label>Message</label><textarea name="message" rows="4" required></textarea></p>
+            <button class="btn" type="submit" style="width:100%">Envoyer</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

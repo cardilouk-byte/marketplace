@@ -1,0 +1,27 @@
+{% extends 'site/base.html' %}
+{% block title %}Checkout - AgroShop{% endblock %}
+{% block content %}
+<div class="section" style="margin-top:1.5rem">
+    <h2>Checkout</h2>
+    <p class="muted">① Informations &nbsp;→&nbsp; ② Livraison &nbsp;→&nbsp; ③ Paiement</p>
+</div>
+<div class="cart-layout">
+    <div class="card">
+        <h3 style="margin-bottom:1rem">Vos informations</h3>
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <h3 style="margin:1rem 0">Méthode de paiement</h3>
+            <div class="radio-row">{{ form.payment_method }}</div>
+            <button class="btn" type="submit" style="width:100%;margin-top:1rem">Confirmer la commande</button>
+        </form>
+    </div>
+    <div class="cart-summary">
+        <h3 style="margin-bottom:1rem">Votre commande</h3>
+        {% for item in items %}
+        <div class="summary-row"><span>{{ item.product.name }} × {{ item.quantity }}</span><span>{{ item.subtotal }} HTG</span></div>
+        {% endfor %}
+        <div class="summary-row"><span>Livraison</span><span>{{ delivery_fee }} HTG</span></div>
+        <div class="summary-row total"><span>Total</span><span>{{ cart.total|add:delivery_fee }} HTG</span></div>
+    </div>
+</div>
+{% endblock %}

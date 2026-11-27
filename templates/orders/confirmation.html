@@ -1,0 +1,14 @@
+{% extends 'site/base.html' %}
+{% block title %}Confirmation - AgroShop{% endblock %}
+{% block content %}
+<div class="section auth-box" style="text-align:center">
+    <div class="card">
+        <div style="font-size:3.5rem">✅</div>
+        <h2 style="margin:.8rem 0">Mesi pou kòmand ou !</h2>
+        <p>Kòmand ou <b>#{{ order.order_number }}</b> anrejistre.</p>
+        <p>Total: <b style="color:var(--secondary-orange)">{{ order.total_amount }} HTG</b></p>
+        <p class="muted" style="margin:.8rem 0">N ap kontakte ou byento pou konfime livrezon an.</p>
+        <a href="{% url 'products:list' %}" class="btn" style="margin-top:.5rem">Continuer mes achats</a>
+    </div>
+</div>
+{% endblock %}
