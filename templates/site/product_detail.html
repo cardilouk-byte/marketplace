@@ -1,0 +1,41 @@
+{% extends 'site/base.html' %}
+{% block title %}{{ product.name }} - AgroShop{% endblock %}
+{% block content %}
+<div class="pd-layout">
+    <div class="pd-img">
+        {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-height:360px;object-fit:contain">{% else %}<div style="font-size:7rem">📦</div>{% endif %}
+    </div>
+    <div>
+        <h1 style="font-size:1.8rem;margin-bottom:.5rem">{{ product.name }}</h1>
+        <p class="stars">★★★★★ <span class="muted">({{ product.reviews.count }} avis)</span></p>
+        <p class="detail-price" style="margin:.8rem 0">{{ product.price }} HTG
+            {% if product.old_price %}<small style="color:#999;text-decoration:line-through;font-size:1rem">{{ product.old_price }} HTG</small>
+            <span class="badge" style="position:static;display:inline-block">-{{ product.discount_percent }}%</span>{% endif %}
+        </p>
+        <p style="margin-bottom:1rem">{{ product.description }}</p>
+        <p style="margin-bottom:1.5rem">{% if product.stock > 0 %}✅ En stock ({{ product.stock }}){% else %}❌ Rupture de stock{% endif %}</p>
+        {% if product.stock > 0 %}
+        <form method="post" action="{% url 'orders:add' product.id %}" style="display:flex;gap:.8rem;align-items:center">{% csrf_token %}
+            <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" style="width:80px">
+            <button class="btn" type="submit">Ajouter au panier</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+{% if related %}
+<div class="section">
+    <div class="section-head"><h2>Produits similaires</h2></div>
+    <div class="product-grid">
+        {% for p in related %}
+        <div class="product-card">
+            {% if p.image %}<img src="{{ p.image.url }}" alt="{{ p.name }}">{% else %}<img src="https://placehold.co/300x200/eef2ff/1e40af?text=Produit" alt="{{ p.name }}">{% endif %}
+            <h4>{{ p.name }}</h4>
+            <p class="price">{{ p.price }} HTG</p>
+            <a href="{% url 'products:detail' p.slug %}" class="btn-blue">Voir</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

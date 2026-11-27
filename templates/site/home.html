@@ -1,0 +1,74 @@
+{% extends 'site/base.html' %}
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>Bienvenue sur AgroShop</h1>
+        <p>Achetez mieux, vivez mieux !</p>
+        <a href="{% url 'products:list' %}" class="btn">Découvrir maintenant →</a>
+    </div>
+    <div style="flex:1;text-align:center;padding:2rem;font-size:5rem;">🛍️</div>
+</section>
+
+<section class="features">
+    <div class="feature">🚚 <div><b>Livraison rapide</b>Partout en Haïti</div></div>
+    <div class="feature">🔒 <div><b>Paiement sécurisé</b>MonCash &amp; NatCash</div></div>
+    <div class="feature">📞 <div><b>Support 24/7</b>Toujours avec vous</div></div>
+    <div class="feature">↩️ <div><b>Retour facile</b>Sous 7 jours</div></div>
+</section>
+
+<section class="section">
+    <div class="section-head">
+        <h2>Nos Catégories</h2>
+        <a href="{% url 'products:categories' %}">Voir tout →</a>
+    </div>
+    <div class="cat-grid">
+        {% for cat in categories %}
+        <a href="{% url 'products:category' cat.slug %}" class="cat-card">
+            {% if cat.image %}<img src="{{ cat.image.url }}" alt="{{ cat.name }}">{% else %}<div style="font-size:2.4rem">📦</div>{% endif %}
+            <span>{{ cat.name }}</span>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-head">
+        <h2>Produits en Promotion</h2>
+        <a href="{% url 'products:list' %}?promo=1">Voir tout →</a>
+    </div>
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-card">
+            {% if product.discount_percent %}<span class="badge">-{{ product.discount_percent }}%</span>{% endif %}
+            {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }}">{% else %}<img src="https://placehold.co/300x200/eef2ff/1e40af?text=Produit" alt="{{ product.name }}">{% endif %}
+            <h4>{{ product.name }}</h4>
+            <p class="price">{{ product.price }} HTG {% if product.old_price %}<small>{{ product.old_price }} HTG</small>{% endif %}</p>
+            <form method="post" action="{% url 'orders:add' product.id %}">{% csrf_token %}
+                <button class="btn-blue" type="submit">Ajouter au panier</button>
+            </form>
+        </div>
+        {% empty %}
+        <p class="muted">Pa gen pwodwi an pwomosyon kounye a.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-head">
+        <h2>Nouveautés</h2>
+        <a href="{% url 'products:list' %}">Voir tout →</a>
+    </div>
+    <div class="product-grid">
+        {% for product in new_products %}
+        <div class="product-card">
+            {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }}">{% else %}<img src="https://placehold.co/300x200/eef2ff/1e40af?text=Produit" alt="{{ product.name }}">{% endif %}
+            <h4>{{ product.name }}</h4>
+            <p class="price">{{ product.price }} HTG</p>
+            <form method="post" action="{% url 'orders:add' product.id %}">{% csrf_token %}
+                <button class="btn-blue" type="submit">Ajouter au panier</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

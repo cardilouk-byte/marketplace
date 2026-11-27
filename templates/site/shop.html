@@ -1,0 +1,30 @@
+{% extends 'site/base.html' %}
+{% block title %}Boutique - AgroShop{% endblock %}
+{% block content %}
+<div class="section" style="margin-top:1.5rem">
+    <h2>Boutique</h2>
+    <p class="muted" style="margin-bottom:1rem">Accueil / Boutique {% if active_cat %} / {{ active_cat.name }}{% endif %}</p>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem">
+        <a href="{% url 'products:list' %}" class="btn-sm btn-blue" style="width:auto;display:inline-block;{% if not active_cat %}background:#f97316{% endif %}">Tous</a>
+        {% for cat in categories %}
+        <a href="{% url 'products:category' cat.slug %}" class="btn-sm btn-blue" style="width:auto;display:inline-block;{% if active_cat.slug == cat.slug %}background:#f97316{% endif %}">{{ cat.name }}</a>
+        {% endfor %}
+    </div>
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-card">
+            {% if product.discount_percent %}<span class="badge">-{{ product.discount_percent }}%</span>{% endif %}
+            {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }}">{% else %}<img src="https://placehold.co/300x200/eef2ff/1e40af?text=Produit" alt="{{ product.name }}">{% endif %}
+            <h4>{{ product.name }}</h4>
+            <p class="price">{{ product.price }} HTG {% if product.old_price %}<small>{{ product.old_price }} HTG</small>{% endif %}</p>
+            <a href="{% url 'products:detail' product.slug %}" class="muted">Voir détails</a>
+            <form method="post" action="{% url 'orders:add' product.id %}" style="margin-top:.5rem">{% csrf_token %}
+                <button class="btn-blue" type="submit">Ajouter au panier</button>
+            </form>
+        </div>
+        {% empty %}
+        <p class="muted">Pa gen pwodwi ki koresponn ak rechèch ou.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
