@@ -3,12 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}AgroShop - Achetez mieux, vivez mieux !{% endblock %}</title>
+<title>{% block title %}{{ site_identity.name|default:'AgroShop' }} - {{ site_identity.tagline|default:'Achetez mieux, vivez mieux !' }}{% endblock %}</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary-blue:{{ site_colors.primary|default:'#1e40af' }};
+  --secondary-orange:{{ site_colors.secondary|default:'#f97316' }};
+  --accent:{{ site_colors.accent|default:'#fbbf24' }};
+  --bg-light:{{ site_colors.background|default:'#f5f7fb' }};
+  --text-dark:{{ site_colors.text|default:'#111111' }};
+}
+{% if site_fonts %}body{font-family:{{ site_fonts.font_family|default:"'Inter', system-ui, sans-serif" }};}{% endif %}
+</style>
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-<div class="topbar">
+<div class="topbar" style="background:var(--primary-blue)">
     <span>🚚 Livraison gratuite à partir de 500 G</span>
     <span>
         {% if user.is_authenticated %}
@@ -22,17 +32,23 @@
     </span>
 </div>
 
-<header class="main-header">
-    <a href="{% url 'products:home' %}" class="logo">🛒 AgroShop</a>
+<header class="main-header" style="{% if site_header %}background:{{ site_header.background_color }};color:{{ site_header.text_color }};{% if site_header.sticky %}position:sticky;top:0;z-index:100;{% endif %}{% endif %}">
+    <a href="{% url 'products:home' %}" class="logo" style="{% if site_header %}color:{{ site_header.text_color }}{% endif %}">
+        {% if site_identity.name %}🛒 {{ site_identity.name }}{% else %}🛒 AgroShop{% endif %}
+    </a>
+    {% if not site_header or site_header.show_search %}
     <form class="search-bar" method="get" action="{% url 'products:list' %}">
         <input type="text" name="q" placeholder="Rechercher un produit..." value="{{ query|default:'' }}">
     </form>
+    {% endif %}
+    {% if not site_header or site_header.show_cart %}
     <div class="header-actions">
-        <a href="{% url 'orders:cart' %}" class="cart-link">🛒 Panier</a>
+        <a href="{% url 'orders:cart' %}" class="cart-link" style="{% if site_header %}color:{{ site_header.text_color }}{% endif %}">🛒 Panier</a>
     </div>
+    {% endif %}
 </header>
 
-<nav class="main-nav">
+<nav class="main-nav" style="background:var(--primary-blue)">
     <a href="{% url 'products:home' %}">Accueil</a>
     <a href="{% url 'products:list' %}">Boutique</a>
     <a href="{% url 'products:categories' %}">Catégories</a>
@@ -50,11 +66,11 @@
 
 {% block content %}{% endblock %}
 
-<footer class="site-footer">
+<footer class="site-footer" style="{% if site_footer %}background:{{ site_footer.background_color }};color:{{ site_footer.text_color }}{% endif %}">
     <div class="footer-grid">
         <div>
-            <h4>🛒 AgroShop</h4>
-            <p>Achetez mieux, vivez mieux ! Votre boutique en ligne en Haïti.</p>
+            <h4>🛒 {{ site_identity.name|default:'AgroShop' }}</h4>
+            <p>{{ site_identity.description|default:site_identity.tagline|default:'Achetez mieux, vivez mieux ! Votre boutique en ligne en Haïti.' }}</p>
         </div>
         <div>
             <h4>Navigation</h4>
@@ -70,12 +86,19 @@
         </div>
         <div>
             <h4>Contact</h4>
-            <p>📍 123 Rue de l'Indépendance, Port-au-Prince</p>
-            <p>📞 +509 38 12 24 56</p>
-            <p>✉️ info@agroshop.ht</p>
+            {% if site_identity.address %}<p>📍 {{ site_identity.address|linebreaksbr }}</p>{% else %}<p>📍 123 Rue de l'Indépendance, Port-au-Prince</p>{% endif %}
+            {% if site_identity.phone %}<p>📞 {{ site_identity.phone }}</p>{% endif %}
+            {% if site_identity.email %}<p>✉️ {{ site_identity.email }}</p>{% endif %}
         </div>
     </div>
-    <div class="footer-bottom">© 2026 AgroShop. Tous droits réservés. | Paiement MonCash &amp; NatCash</div>
+    {% if not site_footer or site_footer.show_social %}
+    <div style="max-width:1200px;margin:1rem auto 0;text-align:center;font-size:1.4rem">
+        {% if site_identity.facebook %}<a href="{{ site_identity.facebook }}" style="text-decoration:none">📘</a>{% endif %}
+        {% if site_identity.instagram %}<a href="{{ site_identity.instagram }}" style="text-decoration:none">📸</a>{% endif %}
+        {% if site_identity.whatsapp %}<a href="https://wa.me/{{ site_identity.whatsapp }}" style="text-decoration:none">💬</a>{% endif %}
+    </div>
+    {% endif %}
+    <div class="footer-bottom">© 2026 {{ site_identity.name|default:'AgroShop' }}. Tous droits réservés. | Paiement MonCash &amp; NatCash</div>
 </footer>
 </body>
 </html>

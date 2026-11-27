@@ -10,7 +10,7 @@
 <body>
 <div class="layout">
 <aside class="sidebar">
-    <h2>🛒 AgroShop Admin</h2>
+    <h2>🛒 {{ site_identity.name|default:'AgroShop' }} Admin</h2>
     <nav>
         <a href="{% url 'dashboard:index' %}" class="{% if active == 'dashboard' %}on{% endif %}">📊 Dashboard</a>
         <a href="{% url 'dashboard:products_list' %}" class="{% if active == 'products' %}on{% endif %}">📦 Produits</a>
