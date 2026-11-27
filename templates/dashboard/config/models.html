@@ -1,0 +1,9 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<h2 style="margin-bottom:1rem">Modèles de pages</h2>
+<div class="card">
+    <table class="dt"><thead><tr><th>Clé</th><th>Page</th></tr></thead>
+    <tbody>{% for key, label in models %}<tr><td>{{ key }}</td><td>{{ label }}</td></tr>{% endfor %}</tbody></table>
+    <p style="margin-top:1rem" class="tag">Les thèmes actifs s'appliquent aux pages correspondantes.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<h2 style="margin-bottom:1rem">Slider d'accueil</h2>
+<div class="grid2">
+    <div class="card">
+        <table class="dt"><thead><tr><th>Ordre</th><th>Titre</th><th>Actif</th><th>Actions</th></tr></thead>
+        <tbody>{% for s in slides %}
+            <tr><td>{{ s.order }}</td><td>{{ s.title }}</td>
+            <td><span class="tag {% if s.is_active %}ok{% else %}off{% endif %}">{% if s.is_active %}Oui{% else %}Non{% endif %}</span></td>
+            <td><a class="btn sm blue" href="{% url 'dashboard:slide_edit' s.id %}">Modifier</a>
+            <form method="post" action="{% url 'dashboard:slide_delete' s.id %}" style="display:inline" onsubmit="return confirm('Efase?')">{% csrf_token %}<button class="btn sm red">Effacer</button></form></td></tr>
+        {% empty %}<tr><td colspan="4">Pa gen slide.</td></tr>{% endfor %}</tbody></table>
+    </div>
+    <div class="card">
+        <h3>Nouveau slide</h3>
+        <form method="post" enctype="multipart/form-data">{% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn" type="submit">Ajouter</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<h2 style="margin-bottom:1.5rem">Tableau de Bord Admin</h2>
+<div class="stats">
+    <div class="stat"><div class="ic">💰</div><div><b>{{ stats.total_revenue }} HTG</b><span>Chiffre d'affaires</span></div></div>
+    <div class="stat"><div class="ic">🧾</div><div><b>{{ stats.total_orders }}</b><span>Commandes</span></div></div>
+    <div class="stat"><div class="ic">👥</div><div><b>{{ stats.total_products }}</b><span>Produits</span></div></div>
+    <div class="stat"><div class="ic">⏳</div><div><b>{{ stats.pending_payments }}</b><span>Paiements en attente</span></div></div>
+</div>
+<div class="grid2">
+    <div class="card">
+        <h3>Dernières commandes</h3>
+        <table class="dt">
+            <thead><tr><th>#</th><th>Client</th><th>Total</th><th>Statut</th></tr></thead>
+            <tbody>{% for o in recent_orders %}
+                <tr><td>{{ o.order_number }}</td><td>{{ o.customer_name }}</td><td>{{ o.total_amount }} HTG</td><td><span class="tag">{{ o.get_status_display }}</span></td></tr>
+            {% empty %}<tr><td colspan="4">Pa gen kòmand.</td></tr>{% endfor %}</tbody>
+        </table>
+    </div>
+    <div class="card">
+        <h3>Derniers paiements</h3>
+        <table class="dt">
+            <thead><tr><th>#</th><th>Montant</th><th>Statut</th></tr></thead>
+            <tbody>{% for p in recent_payments %}
+                <tr><td>{{ p.pk }}</td><td>{{ p.amount }} HTG</td><td><span class="tag {% if p.status == 'completed' %}ok{% elif p.status == 'failed' %}off{% endif %}">{{ p.get_status_display }}</span></td></tr>
+            {% empty %}<tr><td colspan="3">Pa gen peman.</td></tr>{% endfor %}</tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

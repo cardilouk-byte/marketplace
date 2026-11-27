@@ -1,0 +1,11 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<h2 style="margin-bottom:1rem">Sauvegardes</h2>
+<div class="card">
+    <p>Pou fè yon backup konplè done yo, sèvi ak lòd Django la:</p>
+    <pre style="background:#0f172a;color:#e2e8f0;padding:1rem;border-radius:8px;margin:1rem 0">python manage.py dumpdata --exclude contenttypes --exclude auth.permission &gt; backup.json</pre>
+    <p>Pou retabli:</p>
+    <pre style="background:#0f172a;color:#e2e8f0;padding:1rem;border-radius:8px">python manage.py loaddata backup.json</pre>
+    <p style="margin-top:1rem"><a class="btn blue" href="{% url 'dashboard:config_save' %}">💾 Sauvegarder le design actuel</a></p>
+</div>
+{% endblock %}

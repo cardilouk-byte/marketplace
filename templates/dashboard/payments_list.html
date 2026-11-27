@@ -1,0 +1,18 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<h2 style="margin-bottom:1rem">Paiements</h2>
+<div class="card">
+    <table class="dt">
+        <thead><tr><th>#</th><th>Commande</th><th>Fournisseur</th><th>Montant</th><th>Statut</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody>{% for p in payments %}
+            <tr><td>{{ p.pk }}</td><td>{{ p.order.order_number }}</td><td>{{ p.get_provider_display }}</td><td>{{ p.amount }} HTG</td>
+            <td><span class="tag {% if p.status == 'completed' %}ok{% elif p.status == 'failed' %}off{% endif %}">{{ p.get_status_display }}</span></td>
+            <td>{{ p.created_at|date:"d/m/Y H:i" }}</td>
+            <td>{% if p.status != 'completed' %}<a class="btn sm" href="{% url 'dashboard:payment_confirm' p.id %}">Confirmer</a>{% endif %}
+                <a class="btn sm blue" href="{% url 'dashboard:payment_edit' p.id %}">Modifier</a>
+            <form method="post" action="{% url 'dashboard:payment_delete' p.id %}" style="display:inline" onsubmit="return confirm('Efase?')">{% csrf_token %}
+            <button class="btn sm red">Effacer</button></form></td></tr>
+        {% empty %}<tr><td colspan="7">Pa gen peman.</td></tr>{% endfor %}</tbody>
+    </table>
+</div>
+{% endblock %}

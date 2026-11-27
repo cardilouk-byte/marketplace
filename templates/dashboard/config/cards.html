@@ -1,0 +1,20 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<h2 style="margin-bottom:1rem">Cartes</h2>
+<div class="grid2">
+    <div class="card">
+        <table class="dt"><thead><tr><th>#</th><th>Nom</th><th>Actions</th></tr></thead>
+        <tbody>{% for obj in cards %}
+            <tr><td>{{ obj.pk }}</td><td>{{ obj }}</td>
+            <td><form method="post" action="{% url 'dashboard:card_delete' obj.id %}" onsubmit="return confirm('Efase?')">{% csrf_token %}<button class="btn sm red">Effacer</button></form></td></tr>
+        {% empty %}<tr><td colspan="3">Li vid.</td></tr>{% endfor %}</tbody></table>
+    </div>
+    <div class="card">
+        <h3>Ajouter</h3>
+        <form method="post" enctype="multipart/form-data">{% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn" type="submit">Ajouter</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

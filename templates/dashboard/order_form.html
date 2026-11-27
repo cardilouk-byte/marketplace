@@ -1,0 +1,16 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<h2 style="margin-bottom:1rem">Commande {{ order.order_number }}</h2>
+<div class="card" style="max-width:640px">
+    <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn" type="submit">Enregistrer</button>
+        <a class="btn gray" href="{% url 'dashboard:orders_list' %}">Annuler</a>
+    </form>
+</div>
+<div class="card" style="max-width:640px">
+    <h3>Articles</h3>
+    <table class="dt"><thead><tr><th>Produit</th><th>Qté</th><th>Prix unitaire</th><th>Sous-total</th></tr></thead>
+    <tbody>{% for i in order.items.all %}<tr><td>{{ i.product.name }}</td><td>{{ i.quantity }}</td><td>{{ i.unit_price }} HTG</td><td>{{ i.subtotal }} HTG</td></tr>{% empty %}<tr><td colspan="4">Pa gen atik.</td></tr>{% endfor %}</tbody></table>
+</div>
+{% endblock %}

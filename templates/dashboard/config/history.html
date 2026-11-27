@@ -1,0 +1,13 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<h2 style="margin-bottom:1rem">Historique des versions</h2>
+<div class="card">
+    <table class="dt"><thead><tr><th>Nom</th><th>Créé par</th><th>Publié</th><th>Date</th><th></th></tr></thead>
+    <tbody>{% for v in versions %}
+        <tr><td>{{ v.name }}</td><td>{{ v.created_by.username|default:"-" }}</td>
+        <td><span class="tag {% if v.is_published %}ok{% endif %}">{% if v.is_published %}Publiée{% else %}Non{% endif %}</span></td>
+        <td>{{ v.created_at|date:"d/m/Y H:i" }}</td>
+        <td><a class="btn sm blue" href="{% url 'dashboard:version_restore' v.id %}">Restaurer</a></td></tr>
+    {% empty %}<tr><td colspan="5">Pa gen version. Sèvi ak "Sauver design".</td></tr>{% endfor %}</tbody></table>
+</div>
+{% endblock %}

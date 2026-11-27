@@ -1,0 +1,23 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+    <h2>Produits ({{ products.count }})</h2>
+    <a href="{% url 'dashboard:product_add' %}" class="btn">+ Nouveau produit</a>
+</div>
+<div class="card">
+    <form method="get" style="margin-bottom:1rem"><input type="text" name="q" value="{{ query }}" placeholder="Rechercher..." style="max-width:300px"></form>
+    <table class="dt">
+        <thead><tr><th>Image</th><th>Nom</th><th>Catégorie</th><th>Prix</th><th>Stock</th><th>Actif</th><th>Actions</th></tr></thead>
+        <tbody>{% for p in products %}
+            <tr>
+                <td>{% if p.image %}<img src="{{ p.image.url }}" style="width:40px;height:40px;object-fit:contain">{% else %}📦{% endif %}</td>
+                <td>{{ p.name }}</td><td>{{ p.category.name }}</td><td>{{ p.price }} HTG</td><td>{{ p.stock }}</td>
+                <td><span class="tag {% if p.is_active %}ok{% else %}off{% endif %}">{% if p.is_active %}Oui{% else %}Non{% endif %}</span></td>
+                <td><a class="btn sm blue" href="{% url 'dashboard:product_edit' p.id %}">Modifier</a>
+                    <form method="post" action="{% url 'dashboard:product_delete' p.id %}" style="display:inline" onsubmit="return confirm('Efase pwodwi sa a?')">{% csrf_token %}
+                    <button class="btn sm red">Effacer</button></form></td>
+            </tr>
+        {% empty %}<tr><td colspan="7">Pa gen pwodwi.</td></tr>{% endfor %}</tbody>
+    </table>
+</div>
+{% endblock %}

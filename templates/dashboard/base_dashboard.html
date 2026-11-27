@@ -1,0 +1,56 @@
+{% load static %}<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}AgroShop Admin{% endblock %}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+    <h2>🛒 AgroShop Admin</h2>
+    <nav>
+        <a href="{% url 'dashboard:index' %}" class="{% if active == 'dashboard' %}on{% endif %}">📊 Dashboard</a>
+        <a href="{% url 'dashboard:products_list' %}" class="{% if active == 'products' %}on{% endif %}">📦 Produits</a>
+        <a href="{% url 'dashboard:categories_list' %}" class="{% if active == 'categories' %}on{% endif %}">🏷️ Catégories</a>
+        <a href="{% url 'dashboard:orders_list' %}" class="{% if active == 'orders' %}on{% endif %}">🧾 Commandes</a>
+        <a href="{% url 'dashboard:payments_list' %}" class="{% if active == 'payments' %}on{% endif %}">💳 Paiements</a>
+        <a href="{% url 'dashboard:notifications_list' %}" class="{% if active == 'notifications' %}on{% endif %}">🔔 Notifications</a>
+        <a href="{% url 'dashboard:users_list' %}" class="{% if active == 'users' %}on{% endif %}">👥 Clients</a>
+        <a href="{% url 'dashboard:reports' %}" class="{% if active == 'reports' %}on{% endif %}">📈 Rapports</a>
+        <a href="{% url 'dashboard:backups' %}" class="{% if active == 'backups' %}on{% endif %}">💾 Sauvegardes</a>
+        <a href="{% url 'dashboard:config_general' %}" class="{% if active == 'config_general' %}on{% endif %}">⚙️ Configuration</a>
+        <div class="sep"></div>
+        <a href="{% url 'dashboard:config_header' %}" class="{% if active == 'config_header' %}on{% endif %}">🧱 Header</a>
+        <a href="{% url 'dashboard:config_footer' %}">🦶 Footer</a>
+        <a href="{% url 'dashboard:config_homepage' %}" class="{% if active == 'config_homepage' %}on{% endif %}">🏠 Page d'accueil</a>
+        <a href="{% url 'dashboard:config_slider' %}" class="{% if active == 'config_slider' %}on{% endif %}">🎞️ Slider</a>
+        <a href="{% url 'dashboard:config_colors' %}">🎨 Couleurs</a>
+        <a href="{% url 'dashboard:config_fonts' %}">🔤 Polices</a>
+        <a href="{% url 'dashboard:config_menus' %}">📋 Menus</a>
+        <a href="{% url 'dashboard:config_pages' %}">📄 Pages</a>
+        <a href="{% url 'dashboard:config_media' %}">🖼️ Médias</a>
+        <a href="{% url 'dashboard:config_logos' %}">⭐ Logos</a>
+        <a href="{% url 'dashboard:config_themes' %}">🎭 Thèmes</a>
+        <a href="{% url 'dashboard:config_save' %}">💾 Sauver design</a>
+        <a href="{% url 'dashboard:config_history' %}" class="{% if active == 'config_history' %}on{% endif %}">🕘 Historique</a>
+        <div class="sep"></div>
+        <a href="/">🌐 Voir le site</a>
+        <a href="/admin/">🔐 Admin Django</a>
+    </nav>
+</aside>
+<main class="content">
+    <div class="dtopbar">
+        <form class="dsearch" method="get" action="{% url 'dashboard:products_list' %}">
+            <input type="text" name="q" placeholder="Rechercher un produit...">
+        </form>
+        <div>👤 {{ user.username }} {% if stats %}· 🛒 {{ stats.total_products }} produits · 🧾 {{ stats.total_orders }} commandes{% endif %}</div>
+    </div>
+    {% if messages %}{% for m in messages %}<div class="alert">{{ m }}</div>{% endfor %}{% endif %}
+    {% block content %}{% endblock %}
+</main>
+</div>
+</body>
+</html>

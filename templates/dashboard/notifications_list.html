@@ -1,0 +1,16 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<h2 style="margin-bottom:1rem">Notifications</h2>
+<div class="card">
+    <table class="dt">
+        <thead><tr><th>Titre</th><th>Type</th><th>Utilisateur</th><th>Lu</th><th>Date</th><th></th></tr></thead>
+        <tbody>{% for n in notifications %}
+            <tr><td>{{ n.title }}<br><small style="color:#666">{{ n.message|truncatewords:12 }}</small></td>
+            <td><span class="tag">{{ n.get_type_display }}</span></td><td>{{ n.user.username }}</td>
+            <td><span class="tag {% if n.is_read %}ok{% else %}off{% endif %}">{% if n.is_read %}Oui{% else %}Non{% endif %}</span></td>
+            <td>{{ n.created_at|date:"d/m/Y H:i" }}</td>
+            <td><form method="post" action="{% url 'dashboard:notification_delete' n.id %}" onsubmit="return confirm('Efase?')">{% csrf_token %}<button class="btn sm red">Effacer</button></form></td></tr>
+        {% empty %}<tr><td colspan="6">Pa gen notifikasyon.</td></tr>{% endfor %}</tbody>
+    </table>
+</div>
+{% endblock %}

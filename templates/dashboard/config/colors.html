@@ -1,0 +1,10 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<h2 style="margin-bottom:1rem">Couleurs</h2>
+<div class="card" style="max-width:640px">
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn" type="submit">Enregistrer</button>
+    </form>
+</div>
+{% endblock %}

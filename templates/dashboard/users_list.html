@@ -1,0 +1,19 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+    <h2>Utilisateurs</h2><a href="{% url 'dashboard:user_add' %}" class="btn">+ Nouvel utilisateur</a>
+</div>
+<div class="card">
+    <table class="dt">
+        <thead><tr><th>Nom</th><th>Email</th><th>Staff</th><th>Actif</th><th>Inscrit le</th><th>Actions</th></tr></thead>
+        <tbody>{% for u in users %}
+            <tr><td>{{ u.get_full_name|default:u.username }}</td><td>{{ u.email }}</td>
+            <td><span class="tag {% if u.is_staff %}ok{% endif %}">{% if u.is_staff %}Admin{% else %}Client{% endif %}</span></td>
+            <td><span class="tag {% if u.is_active %}ok{% else %}off{% endif %}">{% if u.is_active %}Oui{% else %}Non{% endif %}</span></td>
+            <td>{{ u.date_joined|date:"d/m/Y" }}</td>
+            <td><a class="btn sm blue" href="{% url 'dashboard:user_edit' u.id %}">Modifier</a>
+            {% if u != request.user %}<form method="post" action="{% url 'dashboard:user_delete' u.id %}" style="display:inline" onsubmit="return confirm('Efase?')">{% csrf_token %}<button class="btn sm red">Effacer</button></form>{% endif %}</td></tr>
+        {% endfor %}</tbody>
+    </table>
+</div>
+{% endblock %}

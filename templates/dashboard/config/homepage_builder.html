@@ -1,0 +1,15 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+    <h2>Page d'accueil - Sections</h2><a href="{% url 'dashboard:section_add' %}" class="btn">+ Nouvelle section</a>
+</div>
+<div class="card">
+    <table class="dt"><thead><tr><th>Ordre</th><th>Section</th><th>Type</th><th>Titre</th><th>Active</th><th>Actions</th></tr></thead>
+    <tbody>{% for s in sections %}
+        <tr><td>{{ s.order }}</td><td>{{ s.name }}</td><td><span class="tag">{{ s.get_section_type_display }}</span></td><td>{{ s.title }}</td>
+        <td><span class="tag {% if s.is_active %}ok{% else %}off{% endif %}">{% if s.is_active %}Oui{% else %}Non{% endif %}</span></td>
+        <td><a class="btn sm blue" href="{% url 'dashboard:section_edit' s.id %}">Modifier</a>
+        <form method="post" action="{% url 'dashboard:section_delete' s.id %}" style="display:inline" onsubmit="return confirm('Efase?')">{% csrf_token %}<button class="btn sm red">Effacer</button></form></td></tr>
+    {% empty %}<tr><td colspan="6">Pa gen seksyon. Klike "Nouvelle section".</td></tr>{% endfor %}</tbody></table>
+</div>
+{% endblock %}

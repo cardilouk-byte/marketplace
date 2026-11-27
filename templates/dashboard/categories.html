@@ -1,0 +1,25 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<h2 style="margin-bottom:1rem">Catégories</h2>
+<div class="grid2">
+    <div class="card">
+        <table class="dt">
+            <thead><tr><th>Nom</th><th>Slug</th><th>Produits</th><th>Actions</th></tr></thead>
+            <tbody>{% for c in categories %}
+                <tr><td>{{ c.name }}</td><td>{{ c.slug }}</td><td>{{ c.products.count }}</td>
+                <td><a class="btn sm blue" href="{% url 'dashboard:category_edit' c.id %}">Modifier</a>
+                <form method="post" action="{% url 'dashboard:category_delete' c.id %}" style="display:inline" onsubmit="return confirm('Efase?')">{% csrf_token %}
+                <button class="btn sm red">Effacer</button></form></td></tr>
+            {% empty %}<tr><td colspan="4">Pa gen kategori.</td></tr>{% endfor %}</tbody>
+        </table>
+    </div>
+    <div class="card">
+        <h3>{% if edit_obj %}Modifier: {{ edit_obj.name }}{% else %}Nouvelle catégorie{% endif %}</h3>
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn" type="submit">Enregistrer</button>
+            {% if edit_obj %}<a class="btn gray" href="{% url 'dashboard:categories_list' %}">Annuler</a>{% endif %}
+        </form>
+    </div>
+</div>
+{% endblock %}
