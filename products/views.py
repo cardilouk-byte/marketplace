@@ -19,6 +19,8 @@ def product_list(request):
     active_cat = None
     if q:
         products = products.filter(Q(name__icontains=q) | Q(description__icontains=q))
+    if request.GET.get('promo'):
+        products = products.filter(old_price__isnull=False).exclude(old_price=0)
     if cat_slug:
         active_cat = get_object_or_404(Category, slug=cat_slug)
         products = products.filter(category=active_cat)
