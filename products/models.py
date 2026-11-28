@@ -28,6 +28,9 @@ class Product(models.Model):
     old_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     stock = models.PositiveIntegerField(default=0)
     image = models.ImageField(upload_to='products/', blank=True, null=True)
+    video = models.FileField(upload_to='product_videos/', blank=True, null=True,
+                             help_text='Video pwodwi a (MP4)')
+    video_url = models.URLField(blank=True, help_text='Oswa lyen YouTube video a')
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -42,6 +45,15 @@ class Product(models.Model):
         if self.old_price and self.old_price > self.price:
             return int(100 - (self.price / self.old_price) * 100)
         return 0
+
+    @property
+    def youtube_embed(self):
+        """Retounen URL embed YouTube si video_url se yon lyen YouTube."""
+        import re
+        if not self.video_url:
+            return None
+        m = re.search(r'(?:youtu\.be/|v=|embed/)([A-Za-z0-9_-]{11})', self.video_url)
+        return f'https://www.youtube.com/embed/{m.group(1)}' if m else None
 
     def get_absolute_url(self):
         return reverse('products:detail', args=[self.slug])

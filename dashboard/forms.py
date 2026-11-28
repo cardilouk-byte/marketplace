@@ -16,7 +16,7 @@ from builder.models import (
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['category', 'name', 'description', 'price', 'stock', 'image', 'is_active']
+        fields = ['category', 'name', 'slug', 'description', 'price', 'old_price', 'stock', 'image', 'video', 'video_url', 'is_active']
         widgets = {'description': forms.Textarea(attrs={'rows': 4})}
 
 
